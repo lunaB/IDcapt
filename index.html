@@ -5,13 +5,26 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <title>IDcapt</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <button id="screenshot" class="btn btn-info btn-sm">캡처</button>
+    <ul class="list-unstyled">
+      <li class="media">
+        <img src="..." class="mr-3" alt="...">
+        <div class="media-body">
+          
+        </div>
+      </li>
+    </ul>
+
+    <h3>App-version</h3>
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">NodeJS <span class="badge badge-dark" id="node-version"></li>
+      <li class="list-group-item">Chromium <span class="badge badge-dark" id="chrome-version"></span></li>
+      <li class="list-group-item">Electron <span class="badge badge-dark" id="electron-version"></span></li>
+    </ul>
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
