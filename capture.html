@@ -1,27 +1,66 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <style>
-      /* html, body {
-        background: rgba(0, 0, 0, 0);
-      }
 
-      #area {
-        background-color: rgba(0, 0, 0, 1);
-        margin: 20px;
-      } */
-      
-    </style>
-    <title>IDcapt</title>
-  </head>
-  <body>
-    <h1 id="area">
-      안녕
-    </h1>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <!-- 투명화를 방해함 -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">  -->
+   
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      color: fff;
+      background-color:  #00000000;
+      -webkit-app-region: drag;
+      position: relative;
+    }
+
+    .sizer {
+      background: #000;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+    }
+
+    .left-top {left: 0;top: 0;}
+    .right-top {right: 0;top: 0;}
+    .left-bottom {left: 0;bottom: 0;}
+    .right-bottom {right: 0;bottom: 0;}
+    .liner {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 10px;
+    }
+    .liner>div {
+      width: 100%;
+      height: 100%;
+      border: 1px dashed #000000AA;
+    }
+  </style>
+  <title>IDcapt</title>
+</head>
+
+<body>
+  <div class="liner">
+    <div></div>
+  </div>
+  <div class="sizer left-top"></div>
+  <div class="sizer right-top"></div>
+  <div class="sizer left-bottom"></div>
+  <div class="sizer right-bottom"></div>
+</body>
+
 </html>

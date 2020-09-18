@@ -1,28 +1,25 @@
 // Modules to control application life and create native browser window
-const {app, ipcMain, BrowserWindow} = require('electron')
+const {app, ipcMain, shell, screen, BrowserWindow, desktopCapturer} = require('electron')
 const path = require('path')
 const fs = require('fs')
+const electron = require('electron')
+const os = require('os')
 
 let mainWindow;
 let captureWindow;
+let capture;
 
 function createCapture() {
   console.log()
   captureWindow = new BrowserWindow({
     width: 600,
     height: 600,
-    // modal: false,
+    modal: false,
     show: false,
-    frame: true,
+    frame: false,
     transparent: true,
-    // alwaysOnTop: true,
+    alwaysOnTop: true,
   });
-
-  captureWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-      event.preventDefault();
-      // create your BrowserWindow here :)
-  });
-
   captureWindow.loadFile('capture.html');
   // captureWindow.webContents.openDevTools();
   captureWindow.show();
@@ -41,13 +38,12 @@ function createWindow() {
   mainWindow.loadFile('index.html')
   // mainWindow.webContents.openDevTools()
   mainWindow.show();
-
-  setTimeout(()=>createCapture(), 1000)
 }
 
 // 앱 실행
 app.whenReady().then(() => {
   createWindow()
+  createCapture()
   
   // 이미 실행중일 경우에 create 안함.
   app.on('activate', function () {
@@ -60,6 +56,20 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
 
+// 이벤트
+ipcMain.on('capture', (data) => {
+  console.log(captureWindow.getBounds())
+  let bounds = captureWindow.getBounds()
+
+  desktopCapturer.getSources({
+    types: ['window', 'screen']
+  }).then(async sources => {
+    for(let source of sources) {
+      console.log(source.name);
+      
+    }
+  })
+})
 
 // ipcMain.on('asynchronous-message', (event, arg) => {
 //   console.log(arg) // "ping" 출력

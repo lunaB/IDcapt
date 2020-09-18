@@ -2,10 +2,15 @@ const {
     ipcRenderer
 } = require('electron')
 
-ipcRenderer.send('capture', {
-    title: 'test',
-    i: 0
+// 캡처버튼 클릭시
+let captureBtn = document.getElementById("captureBtn")
+captureBtn.addEventListener('click', () => {
+    ipcRenderer.send('capture', {
+        title: 'test',
+        pr: window.devicePixelRatio
+    })
 })
+
 
 // console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // "pong"이 출력됩니다.
 
