@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>webrtc test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .board {
+            position: relative;
+            height: 400px;
+        }
+
+        #video {
+            position: absolute;
+            height: 400px;
+            left: 0;
+            top: 0;
+        }
+
+        #canvas {
+            position: absolute;
+            height: 400px;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="board">
+        <video id="video" height="400" autoplay muted></video>
+        <canvas id="canvas"></canvas>
+    </div>
+    <canvas id="videoCanvas" style="display: none;"></canvas>
+    <button id="videoBtn">start</button>
+    <button id="videoStopBtn">stop</button>
+    <button id="captureBtn">capture</button>
+    <img id="previewImg">
+    <script>
+        let videoBtn = document.getElementById("videoBtn");
+        let videoStopBtn = document.getElementById("videoStopBtn");
+        let video = document.getElementById("video")
+        let captureBtn = document.getElementById("captureBtn")
+        
+        // 영역 설정용
+        let canvas = document.getElementById("canvas")
+        let ctx = canvas.getContext('2d')
+        // 실제 출력용
+        let videoCanvas = document.getElementById("videoCanvas")
+        let vctx = videoCanvas.getContext('2d')
+        
+        let previewImg = document.getElementById("previewImg")
+
+        var width = 0;
+        var height = 400;
+
+        let streaming = false;
+
+
+        video.addEventListener('canplay', function(ev) {
+            if (!streaming) {
+                console.log(video.videoHeight)
+                width = video.videoWidth / (video.videoHeight / height);
+                
+                
+                
+                video.setAttribute('width', width);
+                video.setAttribute('height', height);
+                canvas.setAttribute('width', width);
+                canvas.setAttribute('height', height);
+                console.log(video.videoHeight)
+                streaming = true;
+            }
+        }, false);
+
+        videoBtn.addEventListener('click', function(ev) {
+            startCapture()
+            ev.preventDefault();
+        }, false)
+        videoStopBtn.addEventListener('click', function(ev) {
+            stopCapture()
+            ev.preventDefault();
+        }, false)
+        captureBtn.addEventListener('click', function(ev) {
+            takepicture();
+            ev.preventDefault();
+        }, false);
+
+        function takepicture() {
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(video, 0, 0, width, height);
+                
+                var data = canvas.toDataURL('image/png');
+                previewImg.setAttribute('src', data);
+            } else {
+                clearphoto();
+            }
+        }
+
+        function gotStream(stream) {
+            console.log("Adding local stream");
+            localStream = stream;
+            video.srcObject = stream;
+        }
+
+        function startCapture() {
+            let opt = {
+                video: {
+                    cursor: "never",
+                },
+                audio: false
+            };
+
+            return navigator.mediaDevices.getDisplayMedia(opt)
+                .then(gotStream)
+                .catch(err => {
+                    console.error("Error:" + err);
+                    return null;
+                });
+        }
+
+        function stopCapture() {
+            let tracks = video.srcObject.getTracks();
+
+            tracks.forEach(track => track.stop());
+            video.srcObject = null;
+            
+            streaming = false;
+        }
+    </script>
+</body></html>
