@@ -46,14 +46,14 @@
         let videoStopBtn = document.getElementById("videoStopBtn");
         let video = document.getElementById("video")
         let captureBtn = document.getElementById("captureBtn")
-        
+
         // 영역 설정용
         let canvas = document.getElementById("canvas")
         let ctx = canvas.getContext('2d')
         // 실제 출력용
         let videoCanvas = document.getElementById("videoCanvas")
         let vctx = videoCanvas.getContext('2d')
-        
+
         let previewImg = document.getElementById("previewImg")
 
         var width = 0;
@@ -66,39 +66,47 @@
             if (!streaming) {
                 console.log(video.videoHeight)
                 width = video.videoWidth / (video.videoHeight / height);
-                
-                
-                
+
+
+                // video
                 video.setAttribute('width', width);
                 video.setAttribute('height', height);
+
+                // canvas
                 canvas.setAttribute('width', width);
                 canvas.setAttribute('height', height);
-                console.log(video.videoHeight)
+
+                //videoCanvas
+                videoCanvas.setAttribute('width', video.videoWidth)
+                videoCanvas.setAttribute('height', video.videoHeight)
+
                 streaming = true;
             }
         }, false);
 
         videoBtn.addEventListener('click', function(ev) {
             startCapture()
-            ev.preventDefault();
+            
         }, false)
         videoStopBtn.addEventListener('click', function(ev) {
             stopCapture()
-            ev.preventDefault();
+            
         }, false)
         captureBtn.addEventListener('click', function(ev) {
             takepicture();
-            ev.preventDefault();
+            
         }, false);
 
         function takepicture() {
-            if (width && height) {
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(video, 0, 0, width, height);
+            if (streaming) {
+                vctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+                var data = videoCanvas.toDataURL('image/png');
                 
-                var data = canvas.toDataURL('image/png');
+                console.log(data)
+                
                 previewImg.setAttribute('src', data);
+                
             } else {
                 clearphoto();
             }
@@ -131,7 +139,7 @@
 
             tracks.forEach(track => track.stop());
             video.srcObject = null;
-            
+
             streaming = false;
         }
     </script>
